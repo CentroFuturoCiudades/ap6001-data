@@ -23,6 +23,7 @@ enigh = pd.read_csv(BASE + "enigh_2024_hogares.csv.gz")
 | `enoe_2025t1_ocupados.csv.gz` | 118,931 employed workers | INEGI **ENOE 2025 T1**, `SDEMT` |
 | `pobreza_estados_2016_2024.csv.gz` | 33 units × 16 indicators × 5 years | INEGI, **Pobreza multidimensional 2024**, *Indicadores de pobreza según entidad federativa* (`pm_ef_2024.xlsx`; 2016–2022 are CONEVAL's estimates) |
 | `pobreza_municipios_2020.csv.gz` | 2,469 municipalities | CONEVAL, **Medición de la pobreza municipal 2010–2020**, *Concentrado, indicadores de pobreza por municipio* |
+| `pobreza_conteo_2024.csv.gz`, `pobreza_contribuciones_2024.csv.gz` | 33 units × rules; 33 units × 6 deprivations | INEGI, **Pobreza multidimensional 2024**, person-level file `pobreza_24.csv` of the *Algoritmo de cómputo (Python)* |
 | `geo_estados.csv.gz`, `geo_municipios.csv.gz` | one row per boundary vertex | INEGI, **Marco Geoestadístico** (census 2020 vintage), state and municipal layers, via mxcensus; simplified |
 
 Only the columns the course uses are kept; amounts are **monthly, current MXN** (ENIGH
@@ -32,11 +33,17 @@ estimates population quantities, not sample ones. Column definitions live with t
 materials (`data/README.md` in the course repository).
 
 **Poverty tables.** `pobreza_estados_2016_2024` is long: `cve_ent` (0 = Mexico), `estado`,
-`indicador`, `anio`, `porcentaje` (% of persons), `miles` (thousands of persons) and, for 2024
-only, INEGI's precision indicators for the percentage: `ee` (standard error), `li95`/`ls95`
+`indicador`, `anio`, `porcentaje` (% of persons), `miles` (thousands of persons),
+`carencias_promedio` (average number of the six social deprivations in the group; INEGI's
+"carencias promedio") and, for 2024 only, INEGI's precision indicators for the percentage: `ee` (standard error), `li95`/`ls95`
 (95% interval) and `cv` (coefficient of variation, %). `pobreza_municipios_2020` has
 `cvegeo` (state × 1000 + municipality), the 2020 population and the poverty and extreme-poverty
 percentages (poverty also for 2010 and 2015; `NaN` where CONEVAL reports *n.d.*).
+`pobreza_conteo_2024` gives the headcount `H` (%), the intensity `A` and `M0` = H × A for every
+second cutoff `k` = 1–6 under three income conditions (`ingreso`: `ninguna`, `lpi`, `lpei`); the
+official rules are (`lpi`, 1) and (`lpei`, 3). `pobreza_contribuciones_2024` gives, at the
+official poverty rule, each deprivation's rate, the share poor and deprived (`H_j`), the share of
+the poor deprived and its contribution to `M0` (%).
 
 **Boundaries.** For a choropleth with matplotlib alone (no geopandas, so it runs in the
 browser): columns `cve_ent` or `cvegeo`, `ring`, `x`, `y` — vertices in km in INEGI's Lambert
