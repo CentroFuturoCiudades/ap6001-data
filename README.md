@@ -26,6 +26,8 @@ enigh = pd.read_csv(BASE + "enigh_2024_hogares.csv.gz")
 | `pobreza_conteo_2024.csv.gz`, `pobreza_contribuciones_2024.csv.gz` | 33 units × rules; 33 units × 6 deprivations | INEGI, **Pobreza multidimensional 2024**, person-level file `pobreza_24.csv` of the *Algoritmo de cómputo (Python)* |
 | `geo_estados.csv.gz`, `geo_municipios.csv.gz` | one row per boundary vertex | INEGI, **Marco Geoestadístico** (census 2020 vintage), state and municipal layers, via mxcensus; simplified |
 | `midterm_enigh_2024.csv.gz` | 4,742 households in 580 PSUs | The midterm's frozen subsample of `enigh_2024_hogares.csv.gz` (same columns): within each state a seeded simple random sample of about 5.5% of the PSUs, with every household in them; `factor` is ENIGH's weight times the inverse of the state's PSU sampling fraction |
+| `qss_minwage.csv.gz` | 358 fast-food restaurants | Card, D. & Krueger, A. B. (1994), *Minimum wages and employment*, *AER* 84(4), as distributed with Imai, **Quantitative Social Science** (2017), `minwage.csv` |
+| `qss_star.csv.gz` | 6,325 pupils | The Tennessee **STAR** class-size experiment, as distributed with Imai, **Quantitative Social Science** (2017), `STAR.csv` |
 
 Only the columns the course uses are kept; amounts are **monthly, current MXN** (ENIGH
 publishes quarterly totals, divided by three here). Survey design columns are included —
@@ -46,6 +48,16 @@ official rules are (`lpi`, 1) and (`lpei`, 3). `pobreza_contribuciones_2024` giv
 official poverty rule, each deprivation's rate, the share poor and deprived (`H_j`), the share of
 the poor deprived and its contribution to `M0` (%).
 
+**QSS classroom datasets** (all columns, unchanged). `qss_minwage`: `chain`, `location`
+(`PA`, or one of four New Jersey regions: `centralNJ`, `northNJ`, `shoreNJ`, `southNJ`),
+`wageBefore`/`wageAfter` (starting wage, USD per hour, before and after New Jersey's April
+1992 increase), `fullBefore`/`fullAfter` and `partBefore`/`partAfter` (full- and part-time
+employees; managers are not included). `qss_star`: `race` (1 white, 2 black, 3 Asian,
+4 Hispanic, 5 Native American, 6 other), `classtype` (kindergarten assignment: 1 small,
+2 regular, 3 regular with aide), `yearssmall` (years in a small class), `hsgrad` (graduated
+from high school, 0/1), `g4math` and `g4reading` (4th-grade test scores; missing where not
+observed).
+
 **Boundaries.** For a choropleth with matplotlib alone (no geopandas, so it runs in the
 browser): columns `cve_ent` or `cvegeo`, `ring`, `x`, `y` — vertices in km in INEGI's Lambert
 conformal conic projection (EPSG:6372), exterior rings counter-clockwise and holes clockwise,
@@ -53,7 +65,7 @@ so each unit's rings form one compound `matplotlib.path.Path`. Simplified (Dougl
 2 km for states, 0.8 km for municipalities; islands under 20 km² and 2 km² dropped): for
 display, not for measuring areas.
 
-Rebuilt by `data/make_web_extracts.py` (ENIGH, ENOE) and `data/get_coneval.py` (poverty tables
+Rebuilt by `data/make_web_extracts.py` (ENIGH, ENOE, QSS) and `data/get_coneval.py` (poverty tables
 and boundaries) in the course repository; tags (`v1`, `v2`, …) pin a state of the extracts so
 notebooks stay reproducible when they are regenerated.
 
