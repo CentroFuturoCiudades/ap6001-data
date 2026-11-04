@@ -25,6 +25,7 @@ enigh = pd.read_csv(BASE + "enigh_2024_hogares.csv.gz")
 | `pobreza_municipios_2020.csv.gz` | 2,469 municipalities | CONEVAL, **Medición de la pobreza municipal 2010–2020**, *Concentrado, indicadores de pobreza por municipio* |
 | `pobreza_conteo_2024.csv.gz`, `pobreza_contribuciones_2024.csv.gz` | 33 units × rules; 33 units × 6 deprivations | INEGI, **Pobreza multidimensional 2024**, person-level file `pobreza_24.csv` of the *Algoritmo de cómputo (Python)* |
 | `geo_estados.csv.gz`, `geo_municipios.csv.gz` | one row per boundary vertex | INEGI, **Marco Geoestadístico** (census 2020 vintage), state and municipal layers, via mxcensus; simplified |
+| `midterm_enigh_2024.csv.gz` | 4,742 households in 580 PSUs | The midterm's frozen subsample of `enigh_2024_hogares.csv.gz` (same columns): within each state a seeded simple random sample of about 5.5% of the PSUs, with every household in them; `factor` is ENIGH's weight times the inverse of the state's PSU sampling fraction |
 
 Only the columns the course uses are kept; amounts are **monthly, current MXN** (ENIGH
 publishes quarterly totals, divided by three here). Survey design columns are included —
