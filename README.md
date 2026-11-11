@@ -28,9 +28,13 @@ enigh = pd.read_csv(BASE + "enigh_2024_hogares.csv.gz")
 | `midterm_enigh_2024.csv.gz` | 4,742 households in 580 PSUs | The midterm's frozen subsample of `enigh_2024_hogares.csv.gz` (same columns): within each state a seeded simple random sample of about 5.5% of the PSUs, with every household in them; `factor` is ENIGH's weight times the inverse of the state's PSU sampling fraction |
 | `qss_minwage.csv.gz` | 358 fast-food restaurants | Card, D. & Krueger, A. B. (1994), *Minimum wages and employment*, *AER* 84(4), as distributed with Imai, **Quantitative Social Science** (2017), `minwage.csv` |
 | `qss_star.csv.gz` | 6,325 pupils | The Tennessee **STAR** class-size experiment, as distributed with Imai, **Quantitative Social Science** (2017), `STAR.csv` |
+| `pisofirme_household.csv.gz` | 2,783 households | Cattaneo, M. D., Galiani, S., Gertler, P. J., Martinez, S. & Titiunik, R. (2009), *Housing, Health, and Happiness*, *AEJ: Economic Policy* 1(1): 75–105 — replication data, [doi:10.3886/E114542V1](https://doi.org/10.3886/E114542V1), `PisoFirme_AEJPol-20070024_household.dta` |
+| `pisofirme_individual.csv.gz` | 6,693 persons | The same package, `PisoFirme_AEJPol-20070024_individual.dta` |
 
-Only the columns the course uses are kept; amounts are **monthly, current MXN** (ENIGH
-publishes quarterly totals, divided by three here). Survey design columns are included —
+Only the columns the course uses are kept; amounts are current MXN. The `*_mensual` columns
+(and ENOE's `ing_mensual`) are **monthly**: ENIGH publishes quarterly totals, divided by three
+here. ENIGH's income components `bene_gob`, `transfer` and `remesas` keep INEGI's **quarterly**
+totals: divide by three for a monthly amount. Survey design columns are included —
 ENIGH `factor`/`upm`/`est_dis`, ENOE `fac_tri`/`upm`/`est_d_tri` — because the course
 estimates population quantities, not sample ones. Column definitions live with the course
 materials (`data/README.md` in the course repository).
@@ -58,6 +62,13 @@ employees; managers are not included). `qss_star`: `race` (1 white, 2 black, 3 A
 from high school, 0/1), `g4math` and `g4reading` (4th-grade test scores; missing where not
 observed).
 
+**Piso Firme** (all rows and columns of the two Stata files, as CSV; Stata value labels
+dropped, codes kept). The 2005 survey of households in Torreón, Coahuila (`dpisofirme` = 1,
+offered the Piso Firme cement-floor program) and in matched census blocks of Gómez Palacio and
+Lerdo, Durango (`dpisofirme` = 0), with 2000-census block variables (`C_*`) and the census block
+`idcluster` the paper clusters on. Variable definitions are in the replication package's
+`README.pdf`.
+
 **Boundaries.** For a choropleth with matplotlib alone (no geopandas, so it runs in the
 browser): columns `cve_ent` or `cvegeo`, `ring`, `x`, `y` — vertices in km in INEGI's Lambert
 conformal conic projection (EPSG:6372), exterior rings counter-clockwise and holes clockwise,
@@ -65,8 +76,8 @@ so each unit's rings form one compound `matplotlib.path.Path`. Simplified (Dougl
 2 km for states, 0.8 km for municipalities; islands under 20 km² and 2 km² dropped): for
 display, not for measuring areas.
 
-Rebuilt by `data/make_web_extracts.py` (ENIGH, ENOE, QSS) and `data/get_coneval.py` (poverty tables
-and boundaries) in the course repository; tags (`v1`, `v2`, …) pin a state of the extracts so
+Rebuilt by `data/make_web_extracts.py` (ENIGH, ENOE, QSS), `data/get_coneval.py` (poverty tables
+and boundaries) and `data/get_pisofirme.py` (Piso Firme) in the course repository; tags (`v1`, `v2`, …) pin a state of the extracts so
 notebooks stay reproducible when they are regenerated.
 
 ## Provenance and licence
@@ -77,3 +88,12 @@ de Evaluación de la Política de Desarrollo Social), whose measurement function
 in 2025. These files are derived extracts — subsets of columns, monthly conversions, reshaped
 tables and simplified boundaries — not official products, and neither institution endorses
 them. The code that builds them is MIT-licensed with the course materials.
+
+The two `pisofirme_*` files are a format conversion (Stata to gzipped CSV, value labels dropped)
+of the replication data of Cattaneo, Galiani, Gertler, Martinez & Titiunik (2009), published by
+the American Economic Association, © 2009 AEA, under the
+[Creative Commons Attribution 4.0 International licence](https://creativecommons.org/licenses/by/4.0/):
+Cattaneo, M. D., Galiani, S., Gertler, P. J., Martinez, S. & Titiunik, R. *Replication data for:
+Housing, Health, and Happiness*. Nashville, TN: American Economic Association; Ann Arbor, MI:
+ICPSR, 2019. [doi:10.3886/E114542V1](https://doi.org/10.3886/E114542V1). The same licence applies
+to these converted files.
